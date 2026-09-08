@@ -1,71 +1,132 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+import AdminLayout from "./layouts/AdminLayout";
 
 import Home from "./pages/Home";
 import SearchResult from "./pages/SearchResult";
 import ResultDetail from "./pages/ResultDetail";
 
+import AdminLogin from "./pages/AdminLogin";
+import Dashboard from "./pages/Dashboard";
+import Students from "./pages/Students";
+import Subjects from "./pages/Subjects";
+import Results from "./pages/Results";
+import PublishResults from "./pages/PublishResults";
+import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
+
 function App() {
   return (
     <BrowserRouter>
-
-      <Navbar />
-
       <Routes>
 
-        {/* Public Pages */}
-        <Route path="/" element={<Home />} />
+        {/* =========================
+            PUBLIC ROUTES
+        ========================== */}
+
+        <Route
+          path="/"
+          element={
+            <>
+              <Navbar />
+              <Home />
+            </>
+          }
+        />
 
         <Route
           path="/search"
-          element={<SearchResult />}
+          element={
+            <>
+              <Navbar />
+              <SearchResult />
+            </>
+          }
         />
 
         <Route
           path="/result/:studentId"
-          element={<ResultDetail />}
+          element={
+            <>
+              <Navbar />
+              <ResultDetail />
+            </>
+          }
         />
 
-        {/* Admin Pages - Coming Soon */}
+        {/* =========================
+            ADMIN LOGIN
+        ========================== */}
+
         <Route
           path="/admin/login"
-          element={
-            <div className="flex min-h-[calc(100vh-64px)] items-center justify-center">
-              <h1 className="text-2xl font-bold text-slate-800">
-                Admin Login Coming Soon
-              </h1>
-            </div>
-          }
+          element={<AdminLogin />}
         />
 
-        <Route
-          path="/admin/dashboard"
-          element={
-            <div className="flex min-h-[calc(100vh-64px)] items-center justify-center">
-              <h1 className="text-2xl font-bold text-slate-800">
-                Admin Dashboard Coming Soon
-              </h1>
-            </div>
-          }
-        />
+        {/* =========================
+            PROTECTED ADMIN ROUTES
+        ========================== */}
 
-        {/* 404 Page */}
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/admin"
+            element={<AdminLayout />}
+          >
+            <Route
+              path="dashboard"
+              element={<Dashboard />}
+            />
+
+            <Route
+              path="students"
+              element={<Students />}
+            />
+
+            <Route
+              path="subjects"
+              element={<Subjects />}
+            />
+
+            <Route
+              path="results"
+              element={<Results />}
+            />
+
+            <Route
+              path="publish"
+              element={<PublishResults />}
+            />
+
+            <Route
+              path="reports"
+              element={<Reports />}
+            />
+
+            <Route
+              path="settings"
+              element={<Settings />}
+            />
+          </Route>
+        </Route>
+
+        {/* =========================
+            404
+        ========================== */}
+
         <Route
           path="*"
           element={
-            <div className="flex min-h-[calc(100vh-64px)] items-center justify-center px-4">
+            <div className="flex min-h-screen items-center justify-center bg-slate-50">
               <div className="text-center">
-                <h1 className="text-6xl font-extrabold text-blue-600">
+                <h1 className="text-7xl font-black text-blue-600">
                   404
                 </h1>
 
-                <h2 className="mt-3 text-2xl font-bold text-slate-900">
-                  Page Not Found
-                </h2>
-
-                <p className="mt-2 text-slate-500">
-                  The page you are looking for doesn't exist.
+                <p className="mt-3 text-lg text-slate-600">
+                  Page not found
                 </p>
               </div>
             </div>
@@ -73,7 +134,6 @@ function App() {
         />
 
       </Routes>
-
     </BrowserRouter>
   );
 }
